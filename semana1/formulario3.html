@@ -1,0 +1,68 @@
+ <!--   Solo es para que compare con el otro metodo
+este tiene dentro del table el form-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formulario</title>
+</head>
+<body>
+    <h1>Formulario</h1><br><br>
+    
+    <table border="1" > 
+        <form action="">
+        <tr>
+            <td><label for="nombre" >Nombre:</label></td>
+            <td><input type="text" name="nombre" /><br></td>
+        </tr>
+        
+        <tr>
+            <td><label for="apellido paterno">Apellido paterno:</label></td>
+            <td><input type="text" name="apellido paterno"/><br></td>
+        </tr>
+          
+        <tr>
+            <td><label for="apellido materno">Apellido materno:</label>    </td>
+            <td><input type="text" name="apellido materno"/><br>    </td>
+        </tr>
+        
+        
+        <tr>
+            <td><label for="edad">Edad</label></td>
+            <td><input type="number" name="edad" min="17" max="55"/></td>
+            <br> <!--   Edad presionable-->
+        </tr>
+        
+        <tr>
+            <td><label for="fechaNac">Fecha de nacimiento</label></td>
+            <td><input type="date" name="fechaNac"></td>
+            <br> <!--   Fecha de Nacimiento presionable-->
+        </tr>
+        
+        <tr>
+            <td><label for="email">E-mail</label>
+            <td><input type="email" name="email"></td>
+            <br> <!--   Fecha de Nacimiento presionable, 
+                si se ingresa un correo sin @ aparecerá un mensaje de error--></td>
+        </tr>
+
+        <tr>
+            <td><label for="genero">Género</label></td>
+            <td><input type="radio" name="genero" value="masculino"> Masculino
+            <input type="radio" name="genero" value="femenino"> Femenino
+            <input type="radio" name="genero" value="otro" checked="checked"> Otro</td>
+            <br>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Enviar"/></td>
+        </tr>
+        
+        </form>
+    </table>
+
+    <a href="formatos.html"><img src="volver.png" alt="Volver a Indice"></a>
+</body>
+</html>
