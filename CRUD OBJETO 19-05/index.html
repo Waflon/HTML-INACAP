@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Alumnos</title>
+    <script src="Alumno.js"></script>
+    <script>
+
+        function getIndex(rut, alumnos){
+            if(alumnos.length>0){
+                for(let i=0; i<alumnos.length; i++){
+                    if (rut == alumnos[i].rut){
+                        return i; //regresa el indice donde se encuentra
+                    }
+                }
+                return -1;
+            }
+              // retorna -1 si no encuentra nada
+        }
+
+        function JSONToObject(clave){
+            let listaTemp = [];
+            let alumnosTemp = JSON.parse(localStorage.getItem(clave));
+            if(alumnosTemp){
+                for (let _ of alumnosTemp){
+                    listaTemp.push(new Alumno(_.rut, _.nombre, _.apellido));
+                }
+                return listaTemp;
+            }
+            return [];
+            
+        }
+
+        function objectToJSON(lista){
+            localStorage.setItem("alumnos",JSON.stringify(lista));
+        }
+        
+        // 4 alumnos iniciales
+        let a1 = new Alumno("1-1", "Susana", "Correa");
+        let a2 = new Alumno("2-2", "Juan", "Cortez");
+        let a3 = new Alumno("3-3", "Sandra", "Rodriguez");
+        let a4 = new Alumno("4-4", "Pedro", "Perez");
+
+        let listaAlumnos = [a1, a2, a3, a4];
+        //Guardarlos en el localStorage
+        //objectToJSON(listaAlumnos);
+        let alumnos = JSONToObject('alumnos');   //recuperarlos y guardarlos en una variable global      
+        if(alumnos[0]==undefined){  
+            objectToJSON(listaAlumnos); //solo llena de los 4 objetos iniciales si estos no existen
+        }
+
+        function agregar(){
+            let rut = document.getElementById("idRut").value;
+            let nombre = document.getElementById("idNombre").value;
+            let apellido = document.getElementById("idApellido").value;
+            
+            if(rut && nombre && apellido){  // Verificar que los campos no esten vacios
+                let nuevoAlumno = new Alumno(rut, nombre, apellido);
+                alumnos.push(nuevoAlumno);
+                document.getElementById("idTexto").innerHTML ="agregado correctamente"
+                objectToJSON(alumnos);
+            }
+            else{
+                alert("debe llenar todos los campos para agregar");
+            }
+            
+        }
+
+        function listar(){
+            alumnos = JSONToObject('alumnos'); //Trae la version actualizada
+            let texto = "";
+            for (let alumno of alumnos){
+                texto = texto + alumno.toString();
+            }
+            document.getElementById("idTexto").innerHTML = texto ;
+        }
+
+        function buscar(){
+            alumnos = JSONToObject('alumnos'); //Trae la version actualizada
+            let rut = prompt("Ingrese el RUT a borrar", "1-1");
+            let i = getIndex(rut, alumnos);  //encuentra el indice de el elemento rut en el arreglo alumnos
+            
+            if(i != -1){  // si el indice es diferente a -1
+                document.getElementById("idRut").value = alumnos[i].rut; 
+                document.getElementById("idNombre").value = alumnos[i].nombre; 
+                document.getElementById("idApellido").value = alumnos[i].apellido; 
+                document.getElementById("idTexto").innerHTML = "Alumno encontrado existosamente" ;
+            }
+            else{
+                document.getElementById("idRut").value = ""; 
+                document.getElementById("idNombre").value = ""; 
+                document.getElementById("idApellido").value = "";
+                document.getElementById("idTexto").innerHTML = "Alumno no encontrado" ;
+            }
+        }
+
+        function eliminar(){
+            alumnos = JSONToObject('alumnos'); //Trae la version actualizada
+            let rut = prompt("Ingrese el RUT a borrar", "1-1");
+            let i = getIndex(rut, alumnos);  //encuentra el indice de el elemento rut en el arreglo alumnos
+            if(i != -1){
+                alumnos = JSONToObject('alumnos'); //Trae la version actualizada
+                alumnos.splice(i,1);
+                objectToJSON(alumnos);
+                document.getElementById("idTexto").innerHTML = "Alumno eliminado existosamente" ;
+            }
+            else{
+                document.getElementById("idTexto").innerHTML = "Alumno no encontrado" ;
+            }
+        }
+
+        function modificar(){
+            alumnos = JSONToObject('alumnos'); //Trae la version actualizada
+            let rut = prompt("Ingrese el RUT a Modificar", "1-1");
+            let i = getIndex(rut, alumnos);  //encuentra el indice de el elemento rut en el arreglo alumnos
+            if(i != -1){
+                let nombre = prompt("Ingrese el nuevo nombre", alumnos[i].nombre);
+                let apellido = prompt("Ingrese el nuevo nombre", alumnos[i].apellido);
+                alumnos = JSONToObject('alumnos'); //Trae la version actualizada
+                alumnos[i].nombre = nombre;
+                alumnos[i].apellido = apellido;
+                objectToJSON(alumnos);      
+                document.getElementById("idTexto").innerHTML = "Alumno modificado existosamente" ;
+            }
+            else{
+                document.getElementById("idTexto").innerHTML = "Alumno no encontrado" ;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Crud de Alumnos</h1><br>
+
+    <form action="">
+        Rut: <input type="text" id="idRut"><br>
+        Nombre: <input type="text" id="idNombre"><br>
+        Apellido: <input type="text" id="idApellido"><br>
+
+        <input type="Button" value="Agregar" onclick="agregar();">
+        <input type="Button" value="Buscar" onclick="buscar();">
+        <input type="Button" value="Eliminar" onclick="eliminar();">
+        <input type="Button" value="Modificar" onclick="modificar();">
+        <input type="Button" value="Listar" onclick="listar();">
+    </form>
+    <div id="idTexto"></div>
+</body>
+</html>
